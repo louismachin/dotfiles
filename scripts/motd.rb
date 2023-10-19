@@ -75,7 +75,7 @@ def get_weather(q)
     ]
 end
 
-weathers = ['southampton', 'bordeaux', 'reykjavic'].map { |q| get_weather(q) }.flatten
+weathers = ['southampton', 'bordeaux'].map { |q| get_weather(q) }.flatten
 
 print "\n"
 print "  Welcome back...\n".italics
