@@ -6,3 +6,7 @@ end
 task :anim do
     system('python3 ./scripts/rainfall.py')
 end
+
+task :devnotes do
+    system('./scripts/start-discord-bot.sh')
+end

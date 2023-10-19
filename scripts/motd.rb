@@ -44,13 +44,13 @@ def get_weather(q)
     key_path = File.dirname(__FILE__) + '/weather_api_key'
     url = 'https://api.openweathermap.org/data/2.5/weather'
     # Return if no API key found
-    return Array.new(3) unless File.exists?(key_path)
+    return [] unless File.exists?(key_path)
     # Get relevant data with API key
     appid = File.read(key_path).chomp
     res = get(url, { appid: appid, q: q, units: 'metric' })
     data = JSON.parse(res.body)
     # Return if no API data received
-    return Array.new(3) if data == {}
+    return [] if ((data == {}) || (data['cod'] != 200))
     # Return weather data
     weather = data["weather"].first["main"].titleize
     description = data["weather"].first["description"].gsub('shower rain', 'rain').titleize
@@ -75,7 +75,7 @@ def get_weather(q)
     ]
 end
 
-weathers = ['southampton', 'bordeaux'].map { |q| get_weather(q) }.flatten
+weathers = ['southampton', 'bordeaux', 'reykjavic'].map { |q| get_weather(q) }.flatten
 
 print "\n"
 print "  Welcome back...\n".italics
