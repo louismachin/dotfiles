@@ -8,5 +8,5 @@ task :anim do
 end
 
 task :devnotes do
-    system('./scripts/start-discord-bot.sh')
+    system('./scripts/start-nvim-devnotes.sh')
 end
