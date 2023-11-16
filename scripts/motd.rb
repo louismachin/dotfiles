@@ -40,6 +40,15 @@ def get_horoscope
     return JSON.parse(res.body)['today']['pushNotificationText']
 end
 
+def get_aws_bill_summary
+    res = get("https://machin.dev/raw/aws_billing_summary")
+    begin
+      return JSON.parse(res.body)
+    rescue
+      return nil
+    end
+end
+
 def get_weather(q)
     key_path = File.dirname(__FILE__) + '/weather_api_key'
     url = 'https://api.openweathermap.org/data/2.5/weather'
@@ -76,11 +85,19 @@ def get_weather(q)
 end
 
 weathers = ['southampton', 'bordeaux'].map { |q| get_weather(q) }.flatten
+aws_bill = get_aws_bill_summary
+if aws_bill
+  aws_spend = aws_bill["GetCostAndUsage"]["ResultsByTime"][0]["Groups"][0]["Metrics"]["BlendedCost"]["Amount"].to_f.round(2)
+  aws_unit = aws_bill["GetCostAndUsage"]["ResultsByTime"][0]["Groups"][0]["Metrics"]["BlendedCost"]["Unit"]
+  aws_forecast = aws_bill["GetCostForecast"]["Total"]["Amount"].to_f.round(2)
+end
 
 print "\n"
 print "  Welcome back...\n".italics
 print "\n"
 print weathers.map.with_index { |line, i| '     ' + line + (i % 3 == 2 ? "\n" : "") }.join("\n") unless weathers.first == nil
+print "\n"
+print "  Monthly AWS spend: #{aws_spend}#{aws_unit} (#{aws_forecast}#{aws_unit} forecasted)\n" 
 print "\n"
 print "  " + get_horoscope.italics + "\n"
 print "\n"
