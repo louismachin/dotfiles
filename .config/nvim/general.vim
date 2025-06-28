@@ -29,5 +29,9 @@ set number
 " Show current line info (current/total)
 set ruler rulerformat=%=%l/%L
 
+" Set tab options
+set shiftwidth=4
+set tabstop=4
+
 " JSON is JS
 au BufNewFile,BufRead *.json set ai filetype=javascript
